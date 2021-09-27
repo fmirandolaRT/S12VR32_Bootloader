@@ -492,10 +492,10 @@ void main(void) {
   for(;;)
   {
     //display menu
-    OutStr("\r\na.) Erase Flash\r\n");
-    OutStr("b.) Program Flash\r\n");
-    OutStr("c.) Set Baud Rate\r\n");
-    OutStr("d.) Execute Application\r\n");
+    OutStr("\r\n1.) Erase Flash\r\n");
+    OutStr("2.) Program Flash\r\n");
+   // OutStr("c.) Set Baud Rate\r\n");
+    OutStr("3.) Execute Application\r\n");
     OutStr("? ");
     c = getchar();      //get choice
     (void)putchar(c);   //echo choice
@@ -503,7 +503,7 @@ void main(void) {
     
     switch (c) {
     
-    case 'a':
+    case '1':
       c = EraseFlash();
       if (c != 0)    //go erase all the Flash (except the bootloader)
         OutStr(GetErrorString(c));    // and report an error if there was one
@@ -511,7 +511,7 @@ void main(void) {
         OutStr("\r\nErased successfully!\r\n");
       break;
     
-    case 'b':
+    case '2':
       c = ProgramFlash();
       if (c != 0)    //go program the Flash
         OutStr(GetErrorString(c));    //and report an error if there was one
@@ -524,7 +524,7 @@ void main(void) {
       SetBaud();     //go set the SCI baud rate
       break;
     
-    case 'd':
+    case '3':
         DisableInterrupts;
         /* Jump to the application reset vector */
         asm("ldx 0xEFFA");
