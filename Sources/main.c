@@ -512,11 +512,12 @@ void main(void) {
       break;
     
     case '2':
+      OutStr("\r\nReady for RX!\r\n");
       c = ProgramFlash();
       if (c != 0)    //go program the Flash
         OutStr(GetErrorString(c));    //and report an error if there was one
       else
-        OutStr("\r\nDownloaded successfully!\r\n");
+        
         EEPROM_Erase_Sector(BOOT_REQUEST_ADDR_EEPROM);
         break;
 
@@ -525,6 +526,7 @@ void main(void) {
       break;
     
     case '3':
+        OutStr("\r\n Jump To Application\r\n");
         DisableInterrupts;
         /* Jump to the application reset vector */
         asm("ldx 0xEFFA");
