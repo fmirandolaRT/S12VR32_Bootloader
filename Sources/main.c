@@ -68,7 +68,7 @@ Preload command file MUST contain command FLASH NOUNSECURE!
 #define CPU12IVBR           0x3F00
 #define SCI0Ch              0xD6
 
-#define BOOT_REQUEST_KEY 0xAAAAu
+#define BOOT_REQUEST_KEY 0x424Fu  //BO for request BOOT
 #define BOOT_REQUEST_ADDR_EEPROM 0x047Cu
 
 #define __SEG_START_REF(a)  __SEG_START_ ## a
@@ -470,7 +470,7 @@ void main(void) {
 
   EnableInterrupts;     //enable interrupts for the SCI
  
-  OutStr("\f\r\nS12 Bootloader v1.0\r\n");    // sign-on
+  OutStr("\f\r\nRacing Tech DTB Bootloader v1.0\r\n");    // sign-on
   
   /* When the value is 0xaaaau, we must stay in the bootloader. */
   if(boot_val != BOOT_REQUEST_KEY) {
@@ -529,6 +529,10 @@ void main(void) {
         /* Jump to the application reset vector */
         asm("ldx 0xEFFA");
         asm("jmp 0,x");
+      break;
+      
+    case '?':
+        OutStr("\f\r\nRacing Tech DTB Bootloader v1.0\r\n"); // ? Are we in bootloader?
       break;
     
     default:
