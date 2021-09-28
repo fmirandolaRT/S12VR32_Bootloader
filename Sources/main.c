@@ -470,7 +470,7 @@ void main(void) {
 
   EnableInterrupts;     //enable interrupts for the SCI
  
-  OutStr("\f\r\nRacing Tech DTB Bootloader v1.0\r\n");    // sign-on
+  OutStr("\f\r\nRacing Tech DTB Bootloader v1.1\r\n");    // sign-on
   
   /* When the value is 0xaaaau, we must stay in the bootloader. */
   if(boot_val != BOOT_REQUEST_KEY) {
