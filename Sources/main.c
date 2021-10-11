@@ -71,6 +71,10 @@ Preload command file MUST contain command FLASH NOUNSECURE!
 #define BOOT_REQUEST_KEY 0x424Fu  //BO for request BOOT
 #define BOOT_REQUEST_ADDR_EEPROM 0x047Cu
 
+#define SERIAL_NUMBER_ADD 0x00440 // Location in eeprom for Serial Number
+
+#define DTB_SERIAL_NUMBER 0x0009    // SERIAL NUMBER TO BE FLASHED 
+
 #define __SEG_START_REF(a)  __SEG_START_ ## a
 #define __SEG_END_REF(a)    __SEG_END_ ## a
 #define __SEG_SIZE_REF(a)   __SEG_SIZE_ ## a
@@ -453,6 +457,7 @@ void main(void) {
   INT8 c;
 
   UINT16 boot_val;
+  UINT16 Serial_number;
   UINT16 app_reset_vec;
   MODRR2_MODRR = 0x06; //route SCI0 to Port S
   
@@ -467,10 +472,20 @@ void main(void) {
   InitSCI();            //initialize SCI
  
   boot_val = EEPROM_Read_Word(BOOT_REQUEST_ADDR_EEPROM);
+  Serial_number =  EEPROM_Read_Word(SERIAL_NUMBER_ADD);
+/*
+#define SERIAL_NUMBER_ADD 0x00440 // Location in eeprom for Serial Number
 
+#define DTB_SERIAL_NUMBER 0x000A    // SERIAL NUMBER TO BE FLASHED  
+*/
   EnableInterrupts;     //enable interrupts for the SCI
  
   OutStr("\f\r\nRacing Tech DTB Bootloader v1.1\r\n");    // sign-on
+  
+  if(Serial_number != DTB_SERIAL_NUMBER)  {
+    EEPROM_Program_Word(SERIAL_NUMBER_ADD,DTB_SERIAL_NUMBER);
+    OutStr("\r\nSN updated!\r\n");
+  }
   
   /* When the value is 0xaaaau, we must stay in the bootloader. */
   if(boot_val != BOOT_REQUEST_KEY) {
